@@ -1,4 +1,6 @@
 package cl.bootcamp.stylenow.viewmodel
 
-class MainViewModel {
+import androidx.lifecycle.ViewModel
+
+class MainViewModel: ViewModel() {
 }

@@ -3,20 +3,12 @@ package cl.bootcamp.stylenow.ui.screens
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.automirrored.outlined.Help
-import androidx.compose.material.icons.automirrored.sharp.Help
 import androidx.compose.material.icons.filled.Category
-import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Category
-import androidx.compose.material.icons.outlined.Help
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.sharp.Category
-import androidx.compose.material.icons.sharp.Help
-import androidx.compose.material.icons.sharp.Home
-import androidx.compose.material.icons.sharp.Looks
-import androidx.compose.material.icons.sharp.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class ScreenRoutes(
