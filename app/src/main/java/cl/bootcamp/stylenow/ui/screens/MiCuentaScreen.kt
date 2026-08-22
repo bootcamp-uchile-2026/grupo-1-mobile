@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 fun MiCuentaScreen() {
 
     Text(
-        text = "HOME",
+        text = "MI CUENTA",
         modifier = Modifier.padding(vertical = 16.dp)
     )
 }

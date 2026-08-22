@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 fun CatalogoScreen() {
 
     Text(
-        text = "HOME",
+        text = "CATALOGO",
         modifier = Modifier.padding(vertical = 16.dp)
     )
 }

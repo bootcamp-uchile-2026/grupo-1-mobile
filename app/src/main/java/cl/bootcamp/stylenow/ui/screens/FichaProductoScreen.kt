@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 fun FichaProductoScreen() {
 
     Text(
-        text = "HOME",
+        text = "FICHA PRODUCTO",
         modifier = Modifier.padding(vertical = 16.dp)
     )
 }

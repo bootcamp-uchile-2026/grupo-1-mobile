@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 fun CategoriasScreen() {
 
     Text(
-        text = "HOME",
+        text = "CATEGORÍAS",
         modifier = Modifier.padding(vertical = 16.dp)
     )
 }

@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 fun AyudaScreen() {
 
     Text(
-        text = "HOME",
+        text = "AYUDA",
         modifier = Modifier.padding(vertical = 16.dp)
     )
 }
