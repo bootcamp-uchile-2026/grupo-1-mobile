@@ -9,8 +9,4 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun HomeScreen() {
 
-    Text(
-        text = "HOME",
-        modifier = Modifier.padding(vertical = 16.dp)
-    )
 }

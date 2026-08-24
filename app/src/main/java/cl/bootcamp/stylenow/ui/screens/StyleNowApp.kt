@@ -3,17 +3,8 @@ package cl.bootcamp.stylenow.ui.screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.outlined.ShoppingCart
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -44,16 +35,39 @@ fun StyleNowApp(
 
             val titulo = when(rutaActual){
                 "carrito" -> "Mi Carrito"
-                "ficha_producto", "catalogo", ScreenRoutes.HOME.route  -> ""
+                "ficha_producto", "catalogo", "notificaciones", "favoritos", ScreenRoutes.HOME.route  -> ""
                 else -> pantallaActual.title
             }
 
             AppTopBar(
                 titulo = titulo,
+                notificacionesSelected = rutaActual == "notificaciones",
+                favoritosSelected = rutaActual == "favoritos",
+                carritoSelected = rutaActual == "carrito",
                 onNavigateBack = { navController.navigateUp() },
-                onNavigateToCarrito = { navController.navigate("carrito") },
+                onNavigateToCarrito = {
+                    navController.navigate("carrito") {
+                        popUpTo(ScreenRoutes.HOME.route) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                onNavigateToFavoritos = {
+                    navController.navigate("favoritos") {
+                        popUpTo(ScreenRoutes.HOME.route) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                onNavigateToNotificaciones = {
+                    navController.navigate("notificaciones") {
+                        popUpTo(ScreenRoutes.HOME.route) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
                 mostrarBotonAtras = !esPantallaPrincipal,
-                mostrarCarrito = rutaActual != "carrito"
+                mostrarActionIcons = rutaActual != "carrito"
             )
         },
         bottomBar = {
@@ -105,6 +119,14 @@ fun StyleNowApp(
                 }
 
                 //Pantallas secundarias
+                composable("notificaciones") {
+                    NotificacionesScreen()
+                }
+
+                composable("favoritos") {
+                    FavoritosScreen()
+                }
+
                 composable("carrito") {
                     CarritoScreen()
                 }
