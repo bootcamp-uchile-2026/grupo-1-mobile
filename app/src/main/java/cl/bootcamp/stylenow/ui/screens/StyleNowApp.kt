@@ -60,7 +60,7 @@ fun StyleNowApp(
                     }
                 },
                 onNavigateToNotificaciones = {
-                    navController.navigate("notificaciones") {
+                    navController.navigate("ficha_producto") { //TODO() OJO aquí cambiar luego a "notificaciones"
                         popUpTo(ScreenRoutes.HOME.route) { saveState = true }
                         launchSingleTop = true
                         restoreState = true

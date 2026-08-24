@@ -49,8 +49,7 @@ fun HomeScreen() {
         item {
 
             Column(
-            )
-            {
+            ) {
                 //Imagen banner de nueva colección
                 Image(
                     painter = painterResource(id = R.drawable.banner_nueva_coleccion),
@@ -108,8 +107,7 @@ fun HomeScreen() {
                     .fillMaxWidth()
                     .padding(vertical = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
-            )
-            {
+            ) {
 
                 Column {
 
@@ -284,7 +282,6 @@ fun HomeScreen() {
         }
 
         //Sección Catálogo
-        
         val listaProductos = listOf(
             Producto(
                 nombre = "Conjunto Hombre",
@@ -310,7 +307,6 @@ fun HomeScreen() {
                 categoria = Categoria(nombre = "Accesorio")
             )
         )
-        
         items(listaProductos) { producto ->
 
             Row(
