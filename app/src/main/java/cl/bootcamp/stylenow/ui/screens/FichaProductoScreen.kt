@@ -111,7 +111,7 @@ fun FichaProductoScreen() {
         //Selectores
         item {
             val listaTallas = listOf("XS", "S", "M", "L", "XL")
-            val listaColores = listOf(Color.Black, Color.White, Color.Green, Color.Magenta)
+            val listaColores = listOf(Color.Blue, Color.White, Color.Green, Color.Magenta)
             var colorSeleccionado by remember { mutableStateOf(listaColores.firstOrNull()) }
             var tallaSeleccionada by remember { mutableStateOf(listaTallas.firstOrNull()) }
 

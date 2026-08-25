@@ -34,40 +34,44 @@ fun StyleNowApp(
         topBar = {
 
             val titulo = when(rutaActual){
-                "carrito" -> "Mi Carrito"
-                "ficha_producto", "catalogo", "notificaciones", "favoritos", ScreenRoutes.HOME.route  -> ""
+                SecondaryRoutes.CARRITO -> "Mi Carrito"
+                SecondaryRoutes.NOTIFICACIONES -> "Notificaciones"
+                SecondaryRoutes.FAVORITOS -> "Favoritos"
+                SecondaryRoutes.COMUNIDAD -> "Comunidad"
+                SecondaryRoutes.FICHA_PRODUCTO, SecondaryRoutes.CATALOGO, ScreenRoutes.HOME.route  -> ""
+                SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES -> "Cambios y Devoluciones"
                 else -> pantallaActual.title
             }
 
             AppTopBar(
                 titulo = titulo,
-                notificacionesSelected = rutaActual == "notificaciones",
-                favoritosSelected = rutaActual == "favoritos",
-                carritoSelected = rutaActual == "carrito",
+                notificacionesSelected = rutaActual == SecondaryRoutes.NOTIFICACIONES,
+                favoritosSelected = rutaActual == SecondaryRoutes.FAVORITOS,
+                carritoSelected = rutaActual == SecondaryRoutes.CARRITO,
                 onNavigateBack = { navController.navigateUp() },
                 onNavigateToCarrito = {
-                    navController.navigate("carrito") {
+                    navController.navigate(SecondaryRoutes.CARRITO) {
                         popUpTo(ScreenRoutes.HOME.route) { saveState = true }
                         launchSingleTop = true
                         restoreState = true
                     }
                 },
                 onNavigateToFavoritos = {
-                    navController.navigate("favoritos") {
+                    navController.navigate(SecondaryRoutes.FAVORITOS) {
                         popUpTo(ScreenRoutes.HOME.route) { saveState = true }
                         launchSingleTop = true
                         restoreState = true
                     }
                 },
                 onNavigateToNotificaciones = {
-                    navController.navigate("ficha_producto") { //TODO() OJO aquí cambiar luego a "notificaciones"
+                    navController.navigate(SecondaryRoutes.NOTIFICACIONES) {
                         popUpTo(ScreenRoutes.HOME.route) { saveState = true }
                         launchSingleTop = true
                         restoreState = true
                     }
                 },
                 mostrarBotonAtras = !esPantallaPrincipal,
-                mostrarActionIcons = rutaActual != "carrito"
+                mostrarActionIcons = rutaActual != SecondaryRoutes.CARRITO
             )
         },
         bottomBar = {
@@ -119,24 +123,32 @@ fun StyleNowApp(
                 }
 
                 //Pantallas secundarias
-                composable("notificaciones") {
+                composable(SecondaryRoutes.NOTIFICACIONES) {
                     NotificacionesScreen()
                 }
 
-                composable("favoritos") {
+                composable(SecondaryRoutes.FAVORITOS) {
                     FavoritosScreen()
                 }
 
-                composable("carrito") {
+                composable(SecondaryRoutes.CARRITO) {
                     CarritoScreen()
                 }
 
-                composable("catalogo") {
+                composable(SecondaryRoutes.CATALOGO) {
                     CatalogoScreen()
                 }
 
-                composable("ficha_producto") {
+                composable(SecondaryRoutes.FICHA_PRODUCTO) {
                     FichaProductoScreen()
+                }
+
+                composable(SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES) {
+                    CambiosYDevolucionesScreen()
+                }
+
+                composable(SecondaryRoutes.COMUNIDAD) {
+                    ComunidadScreen()
                 }
             }
         }
