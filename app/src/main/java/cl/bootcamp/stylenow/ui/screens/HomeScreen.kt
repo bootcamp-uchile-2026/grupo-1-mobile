@@ -1,6 +1,7 @@
 package cl.bootcamp.stylenow.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.filled.ChangeCircle
 import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.LocalShipping
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -35,7 +37,13 @@ import cl.bootcamp.stylenow.data.Categoria
 import cl.bootcamp.stylenow.data.Producto
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    productos: List<Producto>,
+    categorias: List<Categoria>,
+    onNavigateToFichaProducto: (String) -> Unit,
+    onNavigateToComunidad: () -> Unit,
+    onNavigateToCatalogo: () -> Unit
+) {
 
     LazyColumn(
         modifier = Modifier
@@ -210,47 +218,33 @@ fun HomeScreen() {
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.padding(horizontal = 16.dp)
             ) {
-                //Por ahora lista aquí, luego mover a Default Data
-                val listaCategorias = listOf(
-                    Categoria(
-                        nombre = "Mujer",
-                        idImagenLocal = R.drawable.categoria_mujer
-                    ),
 
-                    Categoria(
-                        nombre = "Accesorios",
-                        idImagenLocal = R.drawable.categoria_accesorios
-                    ),
+                items(categorias) { categoria ->
 
-                    Categoria(
-                        nombre = "Hombre",
-                        idImagenLocal = R.drawable.categoria_hombre
-                    )
-                )
-
-
-                items(listaCategorias) {
-
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .fillParentMaxWidth(0.4f)
+                    Card(
+                        modifier = Modifier.fillParentMaxWidth(0.4f),
+                        onClick = { onNavigateToCatalogo() }
                     ){
-                        Image(
-                            painter = painterResource(it.idImagenLocal ?: R.drawable.categoria_accesorios),
-                            contentDescription = "Imagen de la categoría ${it.nombre}",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .aspectRatio(1f)
-                        )
 
-                        Text(
-                            text = it.nombre,
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.padding(vertical = 8.dp)
-                        )
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ){
+                            Image(
+                                painter = painterResource(categoria.idImagenLocal ?: R.drawable.categoria_accesorios),
+                                contentDescription = "Imagen de la categoría ${categoria.nombre}",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(1f)
+                            )
+
+                            Text(
+                                text = categoria.nombre,
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.padding(vertical = 8.dp)
+                            )
+                        }
                     }
                 }
             }
@@ -268,7 +262,9 @@ fun HomeScreen() {
             )
 
             Button(
-                onClick = {}
+                onClick = {
+                    onNavigateToComunidad()
+                }
             ) {
                 Text(
                     text = "VER COMUNIDAD",
@@ -281,70 +277,51 @@ fun HomeScreen() {
             HorizontalDivider(modifier = Modifier.padding(vertical = 24.dp))
         }
 
-        //Sección Catálogo
-        val listaProductos = listOf(
-            Producto(
-                nombre = "Conjunto Hombre",
-                descripcion = "Lorem ipsum dolor sit amet consectetur adipiscing elit inceptos litora, aptent cursus aenean fringilla egestas odio magnis.",
-                precio = 29990.0,
-                idImagenLocal = R.drawable.producto_hombre,
-                categoria = Categoria(nombre = "Hombre")
-            ),
+        //Seccion Catálogo
+        items(productos) { producto ->
 
-            Producto(
-                nombre = "Conjunto Mujer",
-                descripcion = "Lorem ipsum dolor sit amet consectetur adipiscing elit inceptos litora, aptent cursus aenean fringilla egestas odio magnis.",
-                precio = 39990.0,
-                idImagenLocal = R.drawable.producto_mujer,
-                categoria = Categoria(nombre = "Mujer")
-            ),
+            Card(
+                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
+                onClick = { onNavigateToFichaProducto(producto.id) }
+            ) {
 
-            Producto(
-                nombre = "Conjunto Accesorio",
-                descripcion = "Lorem ipsum dolor sit amet consectetur adipiscing elit inceptos litora, aptent cursus aenean fringilla egestas odio magnis.",
-                precio = 19990.0,
-                idImagenLocal = R.drawable.producto_accesorio,
-                categoria = Categoria(nombre = "Accesorio")
-            )
-        )
-        items(listaProductos) { producto ->
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 16.dp)
-            ){
-
-                Image(
-                    painter = painterResource(producto.idImagenLocal),
-                    contentDescription = producto.nombre,
-                    contentScale = ContentScale.Crop,
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
-                        .weight(0.3f)
-                        .aspectRatio(1f)
-                )
+                        .fillMaxWidth()
 
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.Start,
-                    modifier = Modifier
-                        .weight(0.7f)
-                        .padding(start = 16.dp)
                 ){
 
-                    Text(
-                        text = producto.nombre,
-                        style = MaterialTheme.typography.titleMedium
+                    Image(
+                        painter = painterResource(producto.idImagenLocal),
+                        contentDescription = producto.nombre,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .weight(0.3f)
+                            .aspectRatio(1f)
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier
+                            .weight(0.7f)
+                            .padding(start = 16.dp)
+                    ){
 
-                    Text(
-                        text = "$${producto.precio.toInt()}",
-                        style = MaterialTheme.typography.labelMedium
-                    )
+                        Text(
+                            text = producto.nombre,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = "$${producto.precio.toInt()}",
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                    }
                 }
             }
         }

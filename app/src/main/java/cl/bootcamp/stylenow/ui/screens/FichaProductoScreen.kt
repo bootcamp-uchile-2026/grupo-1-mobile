@@ -18,6 +18,7 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Square
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarOutline
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Square
 import androidx.compose.material.icons.sharp.ArrowDropDown
@@ -26,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,10 +40,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cl.bootcamp.stylenow.R
+import androidx.lifecycle.viewmodel.compose.viewModel
+import cl.bootcamp.stylenow.data.DefaultData
+import cl.bootcamp.stylenow.viewmodel.MainViewModel
 
 @Composable
-fun FichaProductoScreen() {
+fun FichaProductoScreen(
+    viewModel: MainViewModel = viewModel()
+) {
+
+    val productoState by viewModel.selectedProduct.collectAsState()
 
     LazyColumn(
         modifier = Modifier
@@ -53,8 +61,8 @@ fun FichaProductoScreen() {
         //Imagen/Carrusel de imágenes
         item {
             Image(
-                painter = painterResource(R.drawable.producto_hombre), //Cambiar luego al de viewmodel, para obtener al que se le hizo clic
-                contentDescription = "Producto Hombre",
+                painter = painterResource(productoState?.idImagenLocal ?: 1),
+                contentDescription = productoState?.nombre,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -77,7 +85,7 @@ fun FichaProductoScreen() {
                 )
 
                 Text(
-                    text = "Conjunto Hombre", //Cambiar luego al de viewmodel, para obtener al que se le hizo clic
+                    text = productoState?.nombre ?: "",
                     style = MaterialTheme.typography.titleLarge,
                     fontSize = 24.sp,
                     modifier = Modifier
@@ -85,7 +93,7 @@ fun FichaProductoScreen() {
                 )
 
                 Text(
-                    text = "$29.990", //Cambiar luego al de viewmodel, para obtener al que se le hizo clic
+                    text = "$${productoState?.precio?.toInt()}",
                     style = MaterialTheme.typography.titleMedium,
                     fontSize = 20.sp
                 )
@@ -99,9 +107,8 @@ fun FichaProductoScreen() {
                 {
                     for (i in 1..5) {
                         Icon(
-                            imageVector = Icons.Filled.Star,
-                            contentDescription = "Estrella de valoración", //Todos deberían tener el mismo con la puntuación total del producto
-                            tint = Color.Yellow
+                            imageVector = Icons.Filled.StarOutline,
+                            contentDescription = "Estrella de valoración"
                         )
                     }
                 }
@@ -110,10 +117,9 @@ fun FichaProductoScreen() {
 
         //Selectores
         item {
-            val listaTallas = listOf("XS", "S", "M", "L", "XL")
-            val listaColores = listOf(Color.Blue, Color.White, Color.Green, Color.Magenta)
-            var colorSeleccionado by remember { mutableStateOf(listaColores.firstOrNull()) }
-            var tallaSeleccionada by remember { mutableStateOf(listaTallas.firstOrNull()) }
+
+            var colorSeleccionado by remember { mutableStateOf(DefaultData.listaColores.firstOrNull()) }
+            var tallaSeleccionada by remember { mutableStateOf(DefaultData.listaTallas.firstOrNull()) }
 
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -137,7 +143,7 @@ fun FichaProductoScreen() {
                 )
                 {
 
-                    listaColores.forEach { color ->
+                    DefaultData.listaColores.forEach { color ->
 
                         val estaSeleccionado = color == colorSeleccionado
 
@@ -169,14 +175,13 @@ fun FichaProductoScreen() {
                         .selectableGroup()
                 )
                 {
-                    listaTallas.forEach { talla ->
+                    DefaultData.listaTallas.forEach { talla ->
 
                         val estaSeleccionado = talla == tallaSeleccionada
 
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
-                                //.clip(RoundedCornerShape(8.dp))
                                 .background(
                                     color = if (estaSeleccionado) MaterialTheme.colorScheme.primaryContainer else Color.LightGray
                                 )

@@ -8,5 +8,5 @@ data class Producto(
     val descripcion: String,
     val precio: Double,
     val idImagenLocal: Int,
-    val categoria: Categoria // ver también con el tema de subcategorías
+    val categoria: Categoria
 )

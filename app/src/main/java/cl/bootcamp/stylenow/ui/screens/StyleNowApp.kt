@@ -8,17 +8,20 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import cl.bootcamp.stylenow.data.DefaultData
 import cl.bootcamp.stylenow.ui.components.AppBottomBar
 import cl.bootcamp.stylenow.ui.components.AppTopBar
+import cl.bootcamp.stylenow.viewmodel.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StyleNowApp(
-
+    viewModel: MainViewModel = viewModel()
 ) {
 
     val navController = rememberNavController()
@@ -48,27 +51,15 @@ fun StyleNowApp(
                 notificacionesSelected = rutaActual == SecondaryRoutes.NOTIFICACIONES,
                 favoritosSelected = rutaActual == SecondaryRoutes.FAVORITOS,
                 carritoSelected = rutaActual == SecondaryRoutes.CARRITO,
-                onNavigateBack = { navController.navigateUp() },
+                onNavigateBack = { navController.popBackStack(ScreenRoutes.HOME.route, inclusive = false) },
                 onNavigateToCarrito = {
-                    navController.navigate(SecondaryRoutes.CARRITO) {
-                        popUpTo(ScreenRoutes.HOME.route) { saveState = true }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navController.navigate(SecondaryRoutes.CARRITO)
                 },
                 onNavigateToFavoritos = {
-                    navController.navigate(SecondaryRoutes.FAVORITOS) {
-                        popUpTo(ScreenRoutes.HOME.route) { saveState = true }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navController.navigate(SecondaryRoutes.FAVORITOS)
                 },
                 onNavigateToNotificaciones = {
-                    navController.navigate(SecondaryRoutes.NOTIFICACIONES) {
-                        popUpTo(ScreenRoutes.HOME.route) { saveState = true }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navController.navigate(SecondaryRoutes.NOTIFICACIONES)
                 },
                 mostrarBotonAtras = !esPantallaPrincipal,
                 mostrarActionIcons = rutaActual != SecondaryRoutes.CARRITO
@@ -107,7 +98,17 @@ fun StyleNowApp(
             ) {
                 //Pantallas en Navegacion Inferior
                 composable(ScreenRoutes.HOME.route) {
-                    HomeScreen()
+                    HomeScreen(
+                        productos = DefaultData.listaProductos,
+                        categorias = DefaultData.listaCategorias,
+                        onNavigateToFichaProducto = { productoId ->
+
+                            viewModel.selectProduct(productoId)
+                            navController.navigate(SecondaryRoutes.FICHA_PRODUCTO)
+                        },
+                        onNavigateToComunidad = { navController.navigate(SecondaryRoutes.COMUNIDAD) },
+                        onNavigateToCatalogo = { navController.navigate(SecondaryRoutes.CATALOGO) }
+                    )
                 }
 
                 composable(ScreenRoutes.CATEGORIAS.route) {
@@ -140,7 +141,9 @@ fun StyleNowApp(
                 }
 
                 composable(SecondaryRoutes.FICHA_PRODUCTO) {
-                    FichaProductoScreen()
+                    FichaProductoScreen(
+                        viewModel = viewModel
+                    )
                 }
 
                 composable(SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES) {
