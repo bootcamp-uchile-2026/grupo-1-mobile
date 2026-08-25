@@ -42,6 +42,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cl.bootcamp.stylenow.data.DefaultData
+import cl.bootcamp.stylenow.ui.components.DatosEstaticosFichaProducto
+import cl.bootcamp.stylenow.ui.components.ItemDesplegableFichaProducto
+import cl.bootcamp.stylenow.ui.components.SeccionBotonesFichaProducto
+import cl.bootcamp.stylenow.ui.components.SelectoresFichaProducto
 import cl.bootcamp.stylenow.viewmodel.MainViewModel
 
 @Composable
@@ -58,7 +62,7 @@ fun FichaProductoScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        //Imagen/Carrusel de imágenes
+        //Imagen/Carrusel de imágenes(Por ahora una sola imagen)
         item {
             Image(
                 painter = painterResource(productoState?.idImagenLocal ?: 1),
@@ -74,45 +78,11 @@ fun FichaProductoScreen(
         //Datos estáticos
         item {
 
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier.fillMaxWidth()
-            ){
-                Text(
-                    text = "Nuevo",//Etiqueta que solo sale si es nuevo?
-                    style = MaterialTheme.typography.labelMedium
-                )
-
-                Text(
-                    text = productoState?.nombre ?: "",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontSize = 24.sp,
-                    modifier = Modifier
-                        .padding(vertical = 16.dp)
-                )
-
-                Text(
-                    text = "$${productoState?.precio?.toInt()}",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontSize = 20.sp
-                )
-
-
-                //Fila de estrellas de valoración
-                Row(
-                    modifier = Modifier
-                        .padding(vertical = 16.dp)
-                )
-                {
-                    for (i in 1..5) {
-                        Icon(
-                            imageVector = Icons.Filled.StarOutline,
-                            contentDescription = "Estrella de valoración"
-                        )
-                    }
-                }
-            }
+            DatosEstaticosFichaProducto(
+                etiqueta = "Nuevo",
+                nombre = productoState?.nombre ?: "Nombre Producto",
+                precio = productoState?.precio ?: 0.0
+            )
         }
 
         //Selectores
@@ -121,215 +91,40 @@ fun FichaProductoScreen(
             var colorSeleccionado by remember { mutableStateOf(DefaultData.listaColores.firstOrNull()) }
             var tallaSeleccionada by remember { mutableStateOf(DefaultData.listaTallas.firstOrNull()) }
 
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp)
-            ) {
-                Text(
-                    text = "Color: Beige",
-                    style = MaterialTheme.typography.labelLarge,
-                    modifier = Modifier.padding(vertical = 16.dp)
-                )
-
-                //Fila de opciones de colores
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .selectableGroup()
-                )
-                {
-
-                    DefaultData.listaColores.forEach { color ->
-
-                        val estaSeleccionado = color == colorSeleccionado
-
-                        Icon(
-                            imageVector = if(estaSeleccionado) Icons.Filled.Square else Icons.Outlined.Square,
-                            contentDescription = color.toString(),
-                            tint = color,
-                            modifier = Modifier
-                                .selectable(
-                                    selected = estaSeleccionado,
-                                    onClick = { colorSeleccionado = color },
-                                    role = Role.RadioButton
-                                )
-                        )
-                    }
-                }
-
-                Text(
-                    text = "Talla: M",
-                    style = MaterialTheme.typography.labelLarge,
-                    modifier = Modifier.padding(vertical = 16.dp)
-                )
-
-                //Fila de opciones de colores
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier
-                        .padding(vertical = 16.dp)
-                        .selectableGroup()
-                )
-                {
-                    DefaultData.listaTallas.forEach { talla ->
-
-                        val estaSeleccionado = talla == tallaSeleccionada
-
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier
-                                .background(
-                                    color = if (estaSeleccionado) MaterialTheme.colorScheme.primaryContainer else Color.LightGray
-                                )
-                                .selectable(
-                                    selected = estaSeleccionado,
-                                    onClick = { tallaSeleccionada = talla },
-                                    role = Role.RadioButton
-                                )
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
-                        ) {
-                            Text(
-                                text = talla,
-                                color = if (estaSeleccionado) MaterialTheme.colorScheme.onPrimaryContainer else Color.Black,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-                    }
-                }
-
-                Text(
-                    text = "Guía de Tallas",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.secondaryContainer)
-                        .padding(vertical = 4.dp, horizontal = 8.dp)
-                )
-            }
+            SelectoresFichaProducto(
+                colorSeleccionado = colorSeleccionado,
+                tallaSeleccionada = tallaSeleccionada,
+                onSeleccionarColorClick = { color ->
+                    colorSeleccionado = color
+                },
+                onSeleccionarTallaClick = { talla ->
+                    tallaSeleccionada = talla
+                },
+            )
         }
 
         //Botones
         item {
 
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp)
-            ){
-
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    onClick = {}
-                ) {
-                    Text(
-                        text = "AGREGAR AL CARRITO",
-                        style = MaterialTheme.typography.labelLarge,
-                        modifier = Modifier
-                            .padding(vertical = 6.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    onClick = {}
-                ) {
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ){
-                        Icon(
-                            imageVector = Icons.Outlined.FavoriteBorder,
-                            contentDescription = "Icono favoritos"
-                        )
-
-                        Text(
-                            text = "AGREGAR A FAVORITOS",
-                            style = MaterialTheme.typography.labelLarge,
-                            modifier = Modifier
-                                .padding(vertical = 6.dp)
-                        )
-                    }
-                }
-            }
+            SeccionBotonesFichaProducto()
         }
 
         //Descripcion
         item {
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp, horizontal = 16.dp)
-            ){
-                Text(
-                    text = "Descripción",
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                Icon(
-                    imageVector = Icons.Sharp.ArrowDropDown,
-                    contentDescription = "Icono desplegable para descripción"
-                )
-            }
+            ItemDesplegableFichaProducto(titulo = "Descripción")
         }
 
         //Envíos y cambios
         item {
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp, horizontal = 16.dp)
-            ){
-                Text(
-                    text = "Envíos y cambios",
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                Icon(
-                    imageVector = Icons.Sharp.ArrowDropDown,
-                    contentDescription = "Icono desplegable para descripción"
-                )
-            }
+            ItemDesplegableFichaProducto(titulo = "Envíos y cambios")
         }
 
         //Pago seguro
         item {
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp, horizontal = 16.dp)
-            ){
-                Text(
-                    text = "Envíos y cambios",
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                Icon(
-                    imageVector = Icons.Sharp.ArrowDropDown,
-                    contentDescription = "Icono desplegable para descripción"
-                )
-            }
+            ItemDesplegableFichaProducto(titulo = "Pago seguro")
         }
     }
 }

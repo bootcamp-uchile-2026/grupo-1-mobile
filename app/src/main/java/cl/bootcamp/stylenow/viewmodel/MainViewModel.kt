@@ -1,10 +1,7 @@
 package cl.bootcamp.stylenow.viewmodel
 
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cl.bootcamp.stylenow.R
-import cl.bootcamp.stylenow.data.Categoria
 import cl.bootcamp.stylenow.data.DefaultData
 import cl.bootcamp.stylenow.data.Producto
 import kotlinx.coroutines.flow.MutableStateFlow
