@@ -111,6 +111,10 @@ fun StyleNowApp(
                     )
                 }
 
+                composable(ScreenRoutes.LOOKS.route) {
+                    LooksScreen()
+                }
+
                 composable(ScreenRoutes.CATEGORIAS.route) {
                     CategoriasScreen()
                 }

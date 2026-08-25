@@ -5,9 +5,11 @@ import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.automirrored.outlined.Help
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Looks
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Category
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Looks
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -23,6 +25,13 @@ enum class ScreenRoutes(
         title = "Inicio",
         selectedIcon = Icons.Filled.Home,
         unSelectedIcon = Icons.Outlined.Home
+    ),
+
+    LOOKS(
+        route = "looks",
+        title = "Looks",
+        selectedIcon = Icons.Filled.Looks,
+        unSelectedIcon = Icons.Outlined.Looks
     ),
 
     CATEGORIAS(
@@ -44,15 +53,5 @@ enum class ScreenRoutes(
         title = "Ayuda",
         selectedIcon = Icons.AutoMirrored.Filled.Help,
         unSelectedIcon = Icons.AutoMirrored.Outlined.Help
-    ),
-
-    //Solo declaración, estará lista para el hito 2
-//    LOOKS(
-//        route = "looks",
-//        title = "Looks",
-//        selectedIcon = Icons.Filled.Looks,
-//        unSelectedIcon = Icons.Outlined.Looks
-//    )
-
-
+    )
 }
