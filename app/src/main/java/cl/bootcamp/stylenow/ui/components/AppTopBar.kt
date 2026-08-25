@@ -1,9 +1,9 @@
 package cl.bootcamp.stylenow.ui.components
 
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 
@@ -12,12 +12,17 @@ import androidx.compose.runtime.Composable
 fun AppTopBar(
     titulo: String,
     mostrarBotonAtras: Boolean,
-    mostrarCarrito: Boolean,
+    mostrarActionIcons: Boolean,
+    notificacionesSelected: Boolean,
+    favoritosSelected: Boolean,
+    carritoSelected: Boolean,
     onNavigateBack: () -> Unit,
-    onNavigateToCarrito: () -> Unit
+    onNavigateToCarrito: () -> Unit,
+    onNavigateToFavoritos: () -> Unit,
+    onNavigateToNotificaciones: () -> Unit
 ) {
 
-    CenterAlignedTopAppBar(
+    TopAppBar(
         title = {
             Text(
                 text = titulo
@@ -31,8 +36,11 @@ fun AppTopBar(
         },
 
         actions = {
-            if (mostrarCarrito) {
-                AppActionIconCarrito(onNavigateToCarrito)
+            if (mostrarActionIcons) {
+
+                AppActionIconNotificaciones(notificacionesSelected, onNavigateToNotificaciones)
+                AppActionIconFavoritos(favoritosSelected, onNavigateToFavoritos)
+                AppActionIconCarrito(carritoSelected, onNavigateToCarrito)
             }
         },
 

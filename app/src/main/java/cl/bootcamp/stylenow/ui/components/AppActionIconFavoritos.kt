@@ -1,27 +1,27 @@
 package cl.bootcamp.stylenow.ui.components
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.outlined.ShoppingCart
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 
 @Composable
-fun AppActionIconCarrito(
+fun AppActionIconFavoritos(
     selected: Boolean,
-    onNavigateToCarrito: () -> Unit
+    onNavigateToFavoritos: () -> Unit
 ) {
 
     IconButton(
         onClick = {
-            onNavigateToCarrito()
+            onNavigateToFavoritos()
         }
     ) {
         Icon(
-            imageVector = if(selected) Icons.Filled.ShoppingCart else Icons.Outlined.ShoppingCart,
-            contentDescription = "Ver carrito",
+            imageVector = if(selected) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+            contentDescription = "Ver lista de deseados",
             tint = MaterialTheme.colorScheme.onPrimaryContainer
         )
     }

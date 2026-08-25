@@ -1,12 +1,10 @@
 package cl.bootcamp.stylenow.data
 
+import cl.bootcamp.stylenow.R
 import java.util.UUID
 
-data class Producto(
+data class Categoria(
     val id: String = UUID.randomUUID().toString(),
     val nombre: String,
-    val descripcion: String,
-    val precio: Double,
-    val idImagenLocal: Int,
-    val categoria: Categoria
+    val idImagenLocal: Int? = null
 )
