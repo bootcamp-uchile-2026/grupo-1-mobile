@@ -24,6 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cl.bootcamp.stylenow.data.DefaultData
 import cl.bootcamp.stylenow.ui.components.ItemCatalogo
+import cl.bootcamp.stylenow.ui.components.RutaFiltrosElegidos
+import cl.bootcamp.stylenow.ui.components.SeccionBotonesCatalogo
+import cl.bootcamp.stylenow.ui.components.SeccionTituloCatalogo
 import cl.bootcamp.stylenow.ui.components.SeccionTituloComunidad
 
 @Composable
@@ -38,80 +41,23 @@ fun CatalogoScreen(
 
         item {
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(bottom = 24.dp)
-            ) {
-                Text(
-                    text = "Mujer",
-                    style = MaterialTheme.typography.labelLarge
-                )
-
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
-                    contentDescription = "Divisor categoría"
-                )
-
-                Text(
-                    text = "Vestidos",
-                    style = MaterialTheme.typography.labelLarge
-                )
-            }
+            RutaFiltrosElegidos() //Datos simulados hardcodeados
         }
 
         item {
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp)
-            ) {
-                Text(
-                    text = "Vestidos",
-                    style = MaterialTheme.typography.headlineSmall
-                )
-
-                Text(
-                    text = "Encuentra el vestido perfecto para cada ocasión",
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
+            SeccionTituloCatalogo(
+                titulo = "Vestidos",
+                subtitulo = "Encuentra el vestido perfecto para cada ocasión"
+            )
         }
 
         item {
 
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp)
-            ) {
-
-                Button(
-                    modifier = Modifier.weight(0.4f),
-                    onClick = {}
-                ) {
-                    Text(
-                        text = "Filtros",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-
-                Spacer(modifier = Modifier.weight(0.2f))
-
-                Button(
-                    modifier = Modifier.weight(0.4f),
-                    onClick = {}
-                ) {
-                    Text(
-                        text = "Ordenar",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
+            SeccionBotonesCatalogo(
+                textoBoton1 = "Filtros",
+                textoBoton2 = "Ordenar"
+            )
         }
 
         items(DefaultData.listaProductos) { producto ->
