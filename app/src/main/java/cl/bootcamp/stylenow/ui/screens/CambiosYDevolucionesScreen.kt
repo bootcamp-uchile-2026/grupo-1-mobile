@@ -1,31 +1,26 @@
 package cl.bootcamp.stylenow.ui.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Grade
 import androidx.compose.material.icons.filled.LocalShipping
-import androidx.compose.material.icons.filled.SentimentSatisfied
-import androidx.compose.material.icons.filled.SentimentSatisfiedAlt
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cl.bootcamp.stylenow.R
-import cl.bootcamp.stylenow.ui.components.FacilidadesAppHome
+import cl.bootcamp.stylenow.ui.components.ImagenBannerHorizontal
 import cl.bootcamp.stylenow.ui.components.ItemFacilidadHome
 
 @Composable
@@ -36,6 +31,7 @@ fun CambiosYDevolucionesScreen() {
         modifier = Modifier
             .fillMaxSize()
             .padding(vertical = 16.dp, horizontal = 16.dp)
+            .verticalScroll(rememberScrollState())
     ){
 
         Text(
@@ -45,13 +41,9 @@ fun CambiosYDevolucionesScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Image(
-            painter = painterResource(id = R.drawable.banner_cambios_devoluciones),
-            contentDescription = "Banner de la nueva colección",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(2f)
+        ImagenBannerHorizontal(
+            imagenId = R.drawable.banner_cambios_devoluciones,
+            "Cambios y devoluciones"
         )
 
         Spacer(modifier = Modifier.height(16.dp))
