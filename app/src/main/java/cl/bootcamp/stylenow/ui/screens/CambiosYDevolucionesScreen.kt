@@ -12,10 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Grade
 import androidx.compose.material.icons.filled.LocalShipping
-import androidx.compose.material.icons.filled.SentimentSatisfied
-import androidx.compose.material.icons.filled.SentimentSatisfiedAlt
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +22,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cl.bootcamp.stylenow.R
-import cl.bootcamp.stylenow.ui.components.FacilidadesAppHome
 import cl.bootcamp.stylenow.ui.components.ItemFacilidadHome
 
 @Composable
