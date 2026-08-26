@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import cl.bootcamp.stylenow.data.Producto
 
 @Composable
-fun ItemCatalogoHome(
+fun ItemCatalogo(
     producto: Producto,
     onNavigateToFichaProducto: (String) -> Unit
 ) {
