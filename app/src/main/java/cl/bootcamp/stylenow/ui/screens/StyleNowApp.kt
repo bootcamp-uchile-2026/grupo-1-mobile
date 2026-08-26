@@ -51,7 +51,15 @@ fun StyleNowApp(
                 notificacionesSelected = rutaActual == SecondaryRoutes.NOTIFICACIONES,
                 favoritosSelected = rutaActual == SecondaryRoutes.FAVORITOS,
                 carritoSelected = rutaActual == SecondaryRoutes.CARRITO,
-                onNavigateBack = { navController.popBackStack(ScreenRoutes.HOME.route, inclusive = false) },
+                onNavigateBack = {
+
+                    if(rutaActual == SecondaryRoutes.FICHA_PRODUCTO) {
+                        navController.popBackStack()
+
+                    } else {
+                        navController.popBackStack(ScreenRoutes.HOME.route, inclusive = false)
+                    }
+                },
                 onNavigateToCarrito = {
                     navController.navigate(SecondaryRoutes.CARRITO)
                 },
@@ -137,7 +145,13 @@ fun StyleNowApp(
                 }
 
                 composable(SecondaryRoutes.CARRITO) {
-                    CarritoScreen()
+                    CarritoScreen(
+                        onNavigateToFichaProducto = { productoId ->
+
+                            viewModel.selectProduct(productoId)
+                            navController.navigate(SecondaryRoutes.FICHA_PRODUCTO)
+                        }
+                    )
                 }
 
                 composable(SecondaryRoutes.CATALOGO) {
