@@ -42,8 +42,7 @@ fun BannerPrincipalHome(
 
         Text(
             text = titulo,
-            style = MaterialTheme.typography.titleLarge,
-            fontSize = 32.sp,
+            style = MaterialTheme.typography.displayMedium,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
         )
