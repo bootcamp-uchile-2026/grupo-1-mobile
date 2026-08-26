@@ -33,7 +33,7 @@ fun ItemAyuda(
     ){
         Text(
             text = titulo,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(vertical = 24.dp)
         )
 

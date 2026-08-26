@@ -41,9 +41,16 @@ fun StyleNowApp(
                 SecondaryRoutes.NOTIFICACIONES -> "Notificaciones"
                 SecondaryRoutes.FAVORITOS -> "Favoritos"
                 SecondaryRoutes.COMUNIDAD -> "Comunidad"
-                SecondaryRoutes.FICHA_PRODUCTO, SecondaryRoutes.CATALOGO, ScreenRoutes.HOME.route  -> ""
-                SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES -> "Cambios"
+                SecondaryRoutes.FICHA_PRODUCTO, SecondaryRoutes.CATALOGO,
+                ScreenRoutes.HOME.route, SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES  -> ""
+
                 else -> pantallaActual.title
+            }
+
+            val mostrarIconosTopBar = when(rutaActual) {
+                SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES, SecondaryRoutes.CARRITO, ScreenRoutes.MI_CUENTA.route,
+                ScreenRoutes.AYUDA.route -> false
+                else -> true
             }
 
             AppTopBar(
@@ -53,7 +60,7 @@ fun StyleNowApp(
                 carritoSelected = rutaActual == SecondaryRoutes.CARRITO,
                 onNavigateBack = {
 
-                    if(rutaActual == SecondaryRoutes.FICHA_PRODUCTO) {
+                    if(rutaActual == SecondaryRoutes.FICHA_PRODUCTO || rutaActual == SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES) {
                         navController.popBackStack()
 
                     } else {
@@ -70,7 +77,7 @@ fun StyleNowApp(
                     navController.navigate(SecondaryRoutes.NOTIFICACIONES)
                 },
                 mostrarBotonAtras = !esPantallaPrincipal,
-                mostrarActionIcons = rutaActual != SecondaryRoutes.CARRITO
+                mostrarActionIcons = mostrarIconosTopBar
             )
         },
         bottomBar = {
