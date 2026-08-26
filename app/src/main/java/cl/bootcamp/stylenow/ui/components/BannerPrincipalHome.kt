@@ -22,36 +22,42 @@ fun BannerPrincipalHome(
 ){
 
     Column(
+        modifier = Modifier.padding(horizontal = 16.dp)
     ) {
 
-        Image(
-            painter = painterResource(id = R.drawable.banner_nueva_coleccion),
-            contentDescription = "Banner de la nueva colección",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+        ImagenBannerHorizontal(
+            imagenId = R.drawable.banner_nueva_coleccion,
+            descripcion = "Nueva Colección"
         )
+
+//        Image(
+//            painter = painterResource(id = R.drawable.banner_nueva_coleccion),
+//            contentDescription = "Banner de la nueva colección",
+//            contentScale = ContentScale.Crop,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding()
+//        )
 
         Text(
             text = "Nueva colección",
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier
-                .padding(vertical = 12.dp, horizontal = 16.dp)
+                .padding(vertical = 12.dp)
         )
 
         Text(
             text = titulo,
             style = MaterialTheme.typography.displayMedium,
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding()
         )
 
         Text(
             text = subTitulo,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
-                .padding(vertical = 12.dp, horizontal = 16.dp)
+                .padding(vertical = 12.dp)
         )
 
         BotonNavegacionHome(

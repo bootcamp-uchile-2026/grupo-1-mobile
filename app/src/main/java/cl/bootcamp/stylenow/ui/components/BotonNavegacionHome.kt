@@ -16,7 +16,7 @@ fun BotonNavegacionHome(
 
     Button(
         modifier = Modifier
-            .padding(vertical = 8.dp, horizontal = 16.dp),
+            .padding(vertical = 8.dp),
         onClick = {
             onClick()
         }
