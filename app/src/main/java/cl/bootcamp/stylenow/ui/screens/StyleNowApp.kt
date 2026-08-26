@@ -49,7 +49,7 @@ fun StyleNowApp(
 
             val mostrarIconosTopBar = when(rutaActual) {
                 SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES, SecondaryRoutes.CARRITO, ScreenRoutes.MI_CUENTA.route,
-                ScreenRoutes.AYUDA.route -> false
+                ScreenRoutes.AYUDA.route, SecondaryRoutes.COMUNIDAD -> false
                 else -> true
             }
 
