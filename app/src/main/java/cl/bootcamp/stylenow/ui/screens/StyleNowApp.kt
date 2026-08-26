@@ -42,7 +42,7 @@ fun StyleNowApp(
                 SecondaryRoutes.FAVORITOS -> "Favoritos"
                 SecondaryRoutes.COMUNIDAD -> "Comunidad"
                 SecondaryRoutes.FICHA_PRODUCTO, SecondaryRoutes.CATALOGO, ScreenRoutes.HOME.route  -> ""
-                SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES -> "Cambios y Devoluciones"
+                SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES -> "Cambios"
                 else -> pantallaActual.title
             }
 
@@ -132,7 +132,11 @@ fun StyleNowApp(
                 }
 
                 composable(ScreenRoutes.AYUDA.route) {
-                    AyudaScreen()
+                    AyudaScreen(
+                        onNavigateToDevoluciones = {
+                            navController.navigate(SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES)
+                        }
+                    )
                 }
 
                 //Pantallas secundarias
