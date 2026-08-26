@@ -21,13 +21,13 @@ import androidx.compose.ui.unit.dp
 import cl.bootcamp.stylenow.data.Producto
 
 @Composable
-fun ItemCatalogoHome(
+fun ItemCatalogo(
     producto: Producto,
     onNavigateToFichaProducto: (String) -> Unit
 ) {
 
     Card(
-        modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
+        modifier = Modifier.padding(vertical = 8.dp),
         onClick = { onNavigateToFichaProducto(producto.id) }
     ) {
 
@@ -44,7 +44,7 @@ fun ItemCatalogoHome(
                 contentDescription = producto.nombre,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .weight(0.3f)
+                    .weight(0.4f)
                     .aspectRatio(1f)
             )
 
@@ -52,7 +52,7 @@ fun ItemCatalogoHome(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier
-                    .weight(0.7f)
+                    .weight(0.6f)
                     .padding(start = 16.dp)
             ) {
 
@@ -61,11 +61,11 @@ fun ItemCatalogoHome(
                     style = MaterialTheme.typography.titleMedium
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
                     text = "$${producto.precio.toInt()}",
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
         }

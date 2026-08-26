@@ -14,7 +14,7 @@ import cl.bootcamp.stylenow.data.Producto
 import cl.bootcamp.stylenow.ui.components.BannerPrincipalHome
 import cl.bootcamp.stylenow.ui.components.CarruselCategoriasHome
 import cl.bootcamp.stylenow.ui.components.FacilidadesAppHome
-import cl.bootcamp.stylenow.ui.components.ItemCatalogoHome
+import cl.bootcamp.stylenow.ui.components.ItemCatalogo
 import cl.bootcamp.stylenow.ui.components.SeccionComunidadHome
 
 @Composable
@@ -76,7 +76,7 @@ fun HomeScreen(
         //Seccion Catálogo
         items(productos) { producto ->
 
-            ItemCatalogoHome(
+            ItemCatalogo(
                 producto = producto,
                 onNavigateToFichaProducto = onNavigateToFichaProducto
             )

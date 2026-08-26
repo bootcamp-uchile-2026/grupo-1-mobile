@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import cl.bootcamp.stylenow.data.DefaultData
 import cl.bootcamp.stylenow.ui.components.AppBottomBar
@@ -25,6 +28,7 @@ fun StyleNowApp(
 ) {
 
     val navController = rememberNavController()
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     val rutaActual = navBackStackEntry?.destination?.route ?: ScreenRoutes.HOME.route
@@ -32,49 +36,79 @@ fun StyleNowApp(
 
     val esPantallaPrincipal = ScreenRoutes.entries.any { it.route == rutaActual }
 
+    val rutasFlotantes = listOf(
+        SecondaryRoutes.NOTIFICACIONES,
+        SecondaryRoutes.FAVORITOS,
+        SecondaryRoutes.CARRITO,
+        SecondaryRoutes.FICHA_PRODUCTO,
+        SecondaryRoutes.COMUNIDAD,
+        SecondaryRoutes.CATALOGO
+    )
+
+    val titulo = when(rutaActual){
+        SecondaryRoutes.CARRITO -> "Mi Carrito"
+        SecondaryRoutes.NOTIFICACIONES -> "Notificaciones"
+        SecondaryRoutes.FAVORITOS -> "Favoritos"
+        SecondaryRoutes.COMUNIDAD -> "Comunidad"
+        SecondaryRoutes.FICHA_PRODUCTO, SecondaryRoutes.CATALOGO,
+        ScreenRoutes.HOME.route, SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES  -> ""
+
+        else -> pantallaActual.title
+    }
+
+    val mostrarIconosTopBar = when(rutaActual) {
+        SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES, SecondaryRoutes.CARRITO, ScreenRoutes.MI_CUENTA.route -> false
+        else -> true
+    }
+
+    val rutasTopBar = listOf(
+        SecondaryRoutes.NOTIFICACIONES,
+        SecondaryRoutes.FAVORITOS,
+        SecondaryRoutes.CARRITO
+    )
+
     Scaffold(
 
         topBar = {
-
-            val titulo = when(rutaActual){
-                SecondaryRoutes.CARRITO -> "Mi Carrito"
-                SecondaryRoutes.NOTIFICACIONES -> "Notificaciones"
-                SecondaryRoutes.FAVORITOS -> "Favoritos"
-                SecondaryRoutes.COMUNIDAD -> "Comunidad"
-                SecondaryRoutes.FICHA_PRODUCTO, SecondaryRoutes.CATALOGO,
-                ScreenRoutes.HOME.route, SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES  -> ""
-
-                else -> pantallaActual.title
-            }
-
-            val mostrarIconosTopBar = when(rutaActual) {
-                SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES, SecondaryRoutes.CARRITO, ScreenRoutes.MI_CUENTA.route,
-                ScreenRoutes.AYUDA.route, SecondaryRoutes.COMUNIDAD -> false
-                else -> true
-            }
 
             AppTopBar(
                 titulo = titulo,
                 notificacionesSelected = rutaActual == SecondaryRoutes.NOTIFICACIONES,
                 favoritosSelected = rutaActual == SecondaryRoutes.FAVORITOS,
                 carritoSelected = rutaActual == SecondaryRoutes.CARRITO,
-                onNavigateBack = {
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToCarrito = {
 
-                    if(rutaActual == SecondaryRoutes.FICHA_PRODUCTO || rutaActual == SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES) {
-                        navController.popBackStack()
+                    navController.navigate(SecondaryRoutes.CARRITO) {
+                        launchSingleTop = true
+                        restoreState = true
 
-                    } else {
-                        navController.popBackStack(ScreenRoutes.HOME.route, inclusive = false)
+                        if(rutaActual in rutasTopBar) {
+                            popUpTo(rutaActual) { inclusive = true }
+                        }
                     }
                 },
-                onNavigateToCarrito = {
-                    navController.navigate(SecondaryRoutes.CARRITO)
-                },
                 onNavigateToFavoritos = {
-                    navController.navigate(SecondaryRoutes.FAVORITOS)
+
+                    navController.navigate(SecondaryRoutes.FAVORITOS) {
+                        launchSingleTop = true
+                        restoreState = true
+
+                        if(rutaActual in rutasTopBar) {
+                            popUpTo(rutaActual) { inclusive = true }
+                        }
+                    }
                 },
                 onNavigateToNotificaciones = {
-                    navController.navigate(SecondaryRoutes.NOTIFICACIONES)
+
+                    navController.navigate(SecondaryRoutes.NOTIFICACIONES) {
+                        launchSingleTop = true
+                        restoreState = true
+
+                        if(rutaActual in rutasTopBar) {
+                            popUpTo(rutaActual) { inclusive = true }
+                        }
+                    }
                 },
                 mostrarBotonAtras = !esPantallaPrincipal,
                 mostrarActionIcons = mostrarIconosTopBar
@@ -82,19 +116,24 @@ fun StyleNowApp(
         },
         bottomBar = {
 
-            if(esPantallaPrincipal) {
-                AppBottomBar(
-                    rutaActual = rutaActual,
-                    onNavigateTo = { ruta ->
+            AppBottomBar(
+                rutaActual = rutaActual,
+                onNavigateTo = { ruta ->
 
-                        navController.navigate(ruta) {
-                            popUpTo(ScreenRoutes.HOME.route) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+                    while(navController.currentDestination?.route in rutasFlotantes) {
+                        navController.popBackStack()
                     }
-                )
-            }
+
+                    navController.navigate(ruta) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+
         },
         snackbarHost = { /*TODO*/ },
         modifier = Modifier.fillMaxSize()
@@ -109,51 +148,100 @@ fun StyleNowApp(
 
             NavHost(
                 navController = navController,
-                startDestination = ScreenRoutes.HOME.route
+                startDestination = "graph_home"
             ) {
-                //Pantallas en Navegacion Inferior
-                composable(ScreenRoutes.HOME.route) {
-                    HomeScreen(
-                        productos = DefaultData.listaProductos,
-                        categorias = DefaultData.listaCategorias,
-                        onNavigateToFichaProducto = { productoId ->
 
-                            viewModel.selectProduct(productoId)
-                            navController.navigate(SecondaryRoutes.FICHA_PRODUCTO)
-                        },
-                        onNavigateToComunidad = { navController.navigate(SecondaryRoutes.COMUNIDAD) },
-                        onNavigateToCatalogo = { navController.navigate(SecondaryRoutes.CATALOGO) }
+                navigation(
+                    startDestination = ScreenRoutes.HOME.route,
+                    route = "graph_home"
+                ) {
+
+                    composable(ScreenRoutes.HOME.route) {
+                        HomeScreen(
+                            productos = DefaultData.listaProductos,
+                            categorias = DefaultData.listaCategorias,
+                            onNavigateToFichaProducto = { productoId ->
+
+                                viewModel.selectProduct(productoId)
+                                navController.navigate(SecondaryRoutes.FICHA_PRODUCTO)
+                            },
+                            onNavigateToComunidad = { navController.navigate(SecondaryRoutes.COMUNIDAD) },
+                            onNavigateToCatalogo = { navController.navigate(SecondaryRoutes.CATALOGO) }
+                        )
+                    }
+                }
+
+                navigation(
+                    startDestination = SecondaryRoutes.CATALOGO,
+                    route = "graph_catalogo"
+                ) {
+
+                    composable(SecondaryRoutes.CATALOGO) {
+                        CatalogoScreen(
+                            onNavigateToFichaProducto = { productoId ->
+                                viewModel.selectProduct(productoId)
+                                navController.navigate(SecondaryRoutes.FICHA_PRODUCTO)
+                            }
+                        )
+                    }
+                }
+
+                navigation(
+                    startDestination = ScreenRoutes.AYUDA.route,
+                    route = "graph_ayuda"
+                ) {
+                    composable(ScreenRoutes.AYUDA.route) {
+                        AyudaScreen(
+                            onNavigateToDevoluciones = {
+                                navController.navigate(SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES)
+                            }
+                        )
+                    }
+
+                    composable(SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES) {
+                        CambiosYDevolucionesScreen()
+                    }
+                }
+
+                navigation(
+                    startDestination = ScreenRoutes.CATEGORIAS.route,
+                    route = "graph_categorias"
+                ) {
+
+                    composable(ScreenRoutes.CATEGORIAS.route) {
+                        CategoriasScreen()
+                    }
+                }
+
+                navigation(
+                    startDestination = ScreenRoutes.MI_CUENTA.route,
+                    route = "graph_mi_cuenta"
+                ) {
+                    composable(ScreenRoutes.MI_CUENTA.route) {
+                        MiCuentaScreen()
+                    }
+                }
+
+                navigation(
+                    startDestination = ScreenRoutes.LOOKS.route,
+                    route = "graph_looks"
+                ) {
+                    composable(ScreenRoutes.LOOKS.route) {
+                        LooksScreen()
+                    }
+                }
+
+
+                composable(SecondaryRoutes.FICHA_PRODUCTO) {
+                    FichaProductoScreen(
+                        viewModel = viewModel
                     )
                 }
 
-                composable(ScreenRoutes.LOOKS.route) {
-                    LooksScreen()
+                composable(SecondaryRoutes.COMUNIDAD) {
+                    ComunidadScreen()
                 }
 
-                composable(ScreenRoutes.CATEGORIAS.route) {
-                    CategoriasScreen()
-                }
-
-                composable(ScreenRoutes.MI_CUENTA.route) {
-                    MiCuentaScreen()
-                }
-
-                composable(ScreenRoutes.AYUDA.route) {
-                    AyudaScreen(
-                        onNavigateToDevoluciones = {
-                            navController.navigate(SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES)
-                        }
-                    )
-                }
-
-                //Pantallas secundarias
-                composable(SecondaryRoutes.NOTIFICACIONES) {
-                    NotificacionesScreen()
-                }
-
-                composable(SecondaryRoutes.FAVORITOS) {
-                    FavoritosScreen()
-                }
 
                 composable(SecondaryRoutes.CARRITO) {
                     CarritoScreen(
@@ -165,22 +253,13 @@ fun StyleNowApp(
                     )
                 }
 
-                composable(SecondaryRoutes.CATALOGO) {
-                    CatalogoScreen()
+
+                composable(SecondaryRoutes.NOTIFICACIONES) {
+                    NotificacionesScreen()
                 }
 
-                composable(SecondaryRoutes.FICHA_PRODUCTO) {
-                    FichaProductoScreen(
-                        viewModel = viewModel
-                    )
-                }
-
-                composable(SecondaryRoutes.CAMBIOS_Y_DEVOLUCIONES) {
-                    CambiosYDevolucionesScreen()
-                }
-
-                composable(SecondaryRoutes.COMUNIDAD) {
-                    ComunidadScreen()
+                composable(SecondaryRoutes.FAVORITOS) {
+                    FavoritosScreen()
                 }
             }
         }
