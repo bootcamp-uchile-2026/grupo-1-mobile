@@ -39,7 +39,8 @@ fun HomeScreen(
             BannerPrincipalHome(
                 titulo = "Tu estilo, tu momento",
                 subTitulo = "Descubre lo nuevo en ropa y accesorios para cada ocasión.",
-                textoBoton = "COMPRAR AHORA"
+                textoBoton = "COMPRAR AHORA",
+                onBotonClick =  onNavigateToCatalogo
             )
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 24.dp))

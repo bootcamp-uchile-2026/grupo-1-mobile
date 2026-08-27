@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -70,9 +69,10 @@ fun StyleNowApp(
     Scaffold(
 
         topBar = {
+            //Buscador en: Catalogo, Home,
 
             AppTopBar(
-                titulo = titulo,
+                titulo = if(rutaActual == ScreenRoutes.HOME.route || rutaActual == SecondaryRoutes.CATALOGO) null else titulo,
                 notificacionesSelected = rutaActual == SecondaryRoutes.NOTIFICACIONES,
                 favoritosSelected = rutaActual == SecondaryRoutes.FAVORITOS,
                 carritoSelected = rutaActual == SecondaryRoutes.CARRITO,
